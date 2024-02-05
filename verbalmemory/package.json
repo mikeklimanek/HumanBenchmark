@@ -1,0 +1,17 @@
+{
+  "name": "verbalmemory",
+  "version": "0.5.0",
+  "description": "verbal memory bot for human benchmark",
+  "main": "verbalMemory.js",
+  "scripts": {
+    "start": "node verbalMemory.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mike Klimanek",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "puppeteer": "^21.11.0"
+  }
+}
