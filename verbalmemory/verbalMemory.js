@@ -6,7 +6,7 @@ async function main(){
     const page = await browser.newPage();
     await page.goto('https://humanbenchmark.com/tests/verbal-memory', {waitUntil: 'networkidle2'});
 
-    try {     /* click AGREE on cookies first to get rid of the pop up */
+    try {     /* clicks 'AGREE' on cookies first to get rid of the pop up */
         const selector = 'button.css-47sehv, span.css-47sehv';
         const agreeButton = await page.waitForSelector(selector, { timeout: 5000 });
         if (agreeButton) {
@@ -45,7 +45,7 @@ async function main(){
         } else {
             console.log('No word element found.');
         }
-        // await page.waitForTimeout(1000);
+        // await page.waitForTimeout(1000);     // uncomment this if you want to slow down the process to imitate human speed
         
     }
 
