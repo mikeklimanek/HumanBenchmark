@@ -27,11 +27,9 @@ async function main(){
   
 
       await page.click('.letters.notranslate');
-  
-      // Type each part
+
       for (const part of textParts) {
-          await page.keyboard.press(part);
-        //   await page.waitForTimeout(100);
+          await page.keyboard.press(part, /*{delay: 120}*/); // uncomment delay if you want to simulate human speed
       }
 }
 
