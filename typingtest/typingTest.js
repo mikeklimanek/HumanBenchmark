@@ -17,6 +17,22 @@ async function main(){
         console.log('Cookies AGREE button not found:', error);
       }
 
+
+      await page.waitForSelector('span.incomplete');
+
+      const textParts = await page.evaluate(() => {
+          const spans = Array.from(document.querySelectorAll('span.incomplete'));
+          return spans.map(span => span.textContent);
+      });
+  
+
+      await page.click('.letters.notranslate');
+  
+      // Type each part
+      for (const part of textParts) {
+          await page.keyboard.press(part);
+        //   await page.waitForTimeout(100);
+      }
 }
 
 main();
