@@ -8,10 +8,12 @@ async function getCurrentLevel(page) {
     });
 }
 
-async function detectActiveSquaresByLevel(page, maxLevel = 15) {
+async function detectActiveSquaresByLevel(page, maxLevel = 25) {
     let sequences = {};
     for (let level = 1; level <= maxLevel; level++) {
-        console.log(`Detecting sequence for Level ${level}...`);
+        console.log(`****************************************`);
+        console.log(`***Detecting sequence for Level ${level}...***`);
+        console.log(`****************************************`);
         sequences[level] = [];
 
         
@@ -48,7 +50,6 @@ async function detectActiveSquaresByLevel(page, maxLevel = 15) {
         }
 
 
-        console.log(`Waiting for Level ${level} sequence completion...`);
         await new Promise(resolve => setTimeout(resolve)); 
     }
 
@@ -60,7 +61,7 @@ async function detectActiveSquaresByLevel(page, maxLevel = 15) {
 
 
 async function main() {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
     const page = await browser.newPage();
     await page.goto('https://humanbenchmark.com/tests/sequence', { waitUntil: 'networkidle2' });
 
