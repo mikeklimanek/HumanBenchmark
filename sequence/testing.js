@@ -8,7 +8,7 @@ async function getCurrentLevel(page) {
     });
 }
 
-async function detectActiveSquaresByLevel(page, maxLevel = 5) {
+async function detectActiveSquaresByLevel(page, maxLevel = 15) {
     let sequences = {};
     for (let level = 1; level <= maxLevel; level++) {
         console.log(`Detecting sequence for Level ${level}...`);
@@ -36,7 +36,16 @@ async function detectActiveSquaresByLevel(page, maxLevel = 5) {
             
             await new Promise(resolve => setTimeout(resolve, 200)); 
         }
-        
+
+        for (const index of sequences[level]) {
+
+            const row = Math.floor((index - 1) / 3); 
+            const col = (index - 1) % 3;
+            
+            const selector = `.square-row:nth-of-type(${row + 1}) .square:nth-of-type(${col + 1})`;
+            await page.click(selector, { delay: 50 });
+            console.log(`Clicked on square in row ${row + 1}, column ${col + 1}`);
+        }
 
 
         console.log(`Waiting for Level ${level} sequence completion...`);
@@ -73,12 +82,12 @@ async function main() {
 
     console.log('Waiting for sequence to start...');
     const delay = time => new Promise(resolve => setTimeout(resolve, time));
-    await delay(500); 
+    await delay(500);
+    const levelActive = await getCurrentLevel(page);
     const levelActiveSquares = await detectActiveSquaresByLevel(page);
-    console.log('Detection completed:', levelActiveSquares);
+    console.log('Detection completed:', levelActiveSquares, levelActive);
 
 
-    await browser.close();
 }
 
 main();
