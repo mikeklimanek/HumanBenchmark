@@ -24,3 +24,5 @@ Bot for Human Benchmark to practice in Python and Node.js puppeteer
 
 
 * Visual Memory bot remembers a pattern shown and replicates it
+
+![alt text](visualMemory.gif)
