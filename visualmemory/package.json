@@ -5,7 +5,7 @@
   "main": "visualMemory.js",
   "scripts": {
     "start": "node visualMemory.js",
-    "test": "node inspect.js"
+    "test": "node testing.js"
   },
   "author": "Mike Klimanek",
   "license": "ISC",

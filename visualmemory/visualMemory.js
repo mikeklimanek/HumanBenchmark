@@ -16,10 +16,11 @@ function gridSizeForLevel(level) {
 }
 
 async function detectActiveSquaresByLevel(page, maxLevel = 25) {
+    const levelActive = await getCurrentLevel(page);
     let sequences = {};
     for (let level = 1; level <= maxLevel; level++) {
         console.log(`****************************************`);
-        console.log(`***Detecting sequence for Level ${level}...***`);
+        console.log(`***Detecting sequence for Level ${levelActive}...***`);
         console.log(`****************************************`);
         sequences[level] = [];
 
@@ -48,9 +49,11 @@ async function detectActiveSquaresByLevel(page, maxLevel = 25) {
             }
             await new Promise(resolve => setTimeout(resolve, 500)); 
         }
+        console.log(`Waiting 2 seconds before clicking for Level ${level}...`);
+        await new Promise(resolve => setTimeout(resolve, 2000)); 
 
             console.log(`****************************************`);
-            console.log(`***Clicking sequence for Level ${level}...***`);
+            console.log(`***Clicking sequence for Level ${levelActive}...***`);
             console.log(`****************************************`);
             
             const size = gridSizeForLevel(level);
