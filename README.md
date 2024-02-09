@@ -31,3 +31,8 @@ ________________________________________________________________________________
 * Visual Memory bot remembers a pattern shown and replicates it
 
 ![alt text](visualMemory.gif)
+
+_____________________________________________________________________________________________________________
+* Aim Trainer bot clicks all targets
+
+![alt text](aimTrainer.gif)
