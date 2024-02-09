@@ -13,7 +13,7 @@ async function clickNumbersInOrder(page) {
         const selector = `[data-cellnumber="${number}"]`; 
         try {
             await page.waitForSelector(selector, { timeout: 5000 }); 
-            await page.click(selector, { delay: 50 }); 
+            await page.click(selector); 
             console.log(`Clicked on number: ${number}`);
         } catch (error) {
             console.log(`Error clicking number: ${number}. Error: ${error.message}`);
@@ -51,14 +51,14 @@ async function main() {
     await delay(500);
 
 
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 40; i++) {
         let continueToNextLevel = true;
         while (continueToNextLevel) {
             const nextLevelButton = await page.$('.css-de05nr.e19owgy710'); 
             if (nextLevelButton) {
                 console.log('Next level button found. Clicking to continue...');
                 await nextLevelButton.click();
-                await delay(2500);
+                await delay(200);
             } else {
                 console.log('Attempting to click numbers in order...');
                 await clickNumbersInOrder(page);
