@@ -36,3 +36,8 @@ ________________________________________________________________________________
 * Aim Trainer bot clicks all targets
 
 ![alt text](aimTrainer.gif)
+
+_____________________________________________________________________________________________________________
+* Chimp Test bot looks at the order of numbers and clicks on squares based on memory in which order were they numbered
+
+![alt text](chimpTest.gif)
