@@ -11,12 +11,12 @@ async function getCurrentLevel(page) {
 function gridSizeForLevel(level) {
     if (level <= 2) return 3; 
     if (level <= 5) return 4; 
-    if (level <= 9) return 5;
-    if (level <= 14) return 6;
-    if (level <= 20) return 7;
+    if (level < 9) return 5;
+    if (level < 14) return 6;
+    if (level < 19) return 7;
 }
 
-async function detectActiveSquaresByLevel(page, maxLevel = 28) {
+async function detectActiveSquaresByLevel(page, maxLevel = 18) {
     let sequences = {};
     let currentLevel = await getCurrentLevel(page);
     while (currentLevel <= maxLevel) {

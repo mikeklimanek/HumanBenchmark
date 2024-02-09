@@ -7,82 +7,83 @@ async function getCurrentLevel(page) {
         return levelSpan ? parseInt(levelSpan.textContent, 10) : null;
     });
 }
+
 function gridSizeForLevel(level) {
     if (level <= 2) return 3; 
     if (level <= 5) return 4; 
-    if (level <= 9) return 5; 
-    
-    return 5 + Math.floor((level - 10) / 5) + 1;
+    if (level < 9) return 5;
+    if (level < 14) return 6;
+    if (level < 19) return 7;
 }
 
-async function detectActiveSquaresByLevel(page, maxLevel = 25) {
-    const levelActive = await getCurrentLevel(page);
+async function detectActiveSquaresByLevel(page, maxLevel = 18) {
     let sequences = {};
-    for (let level = 1; level <= maxLevel; level++) {
+    let currentLevel = await getCurrentLevel(page);
+    while (currentLevel <= maxLevel) {
         console.log(`****************************************`);
-        console.log(`***Detecting sequence for Level ${levelActive}...***`);
+        console.log(`***Detecting sequence for Level ${currentLevel}...***`);
         console.log(`****************************************`);
-        sequences[level] = [];
+        sequences[currentLevel] = [];
 
-        await new Promise(resolve => setTimeout(resolve)); 
         
+        await new Promise(resolve => setTimeout(resolve)); 
+
         let sequenceDetected = false;
-        let previousIndices = new Set(); 
+        let previousIndex = null;
         
         while (!sequenceDetected) {
             const activeIndices = await page.evaluate(() => {
-                const activeSquares = Array.from(document.querySelectorAll('.active.css-lxtdud.eut2yre1'));
-                return activeSquares.map(square => Array.from(document.querySelectorAll('.css-lxtdud.eut2yre1')).indexOf(square));
+                const squares = Array.from(document.querySelectorAll('.css-lxtdud.eut2yre1'));
+                return squares.map((square, index) => square.classList.contains('active') ? index : -1).filter(index => index !== -1);
             });
             
-            let newActiveFound = activeIndices.some(index => !previousIndices.has(index));
-            if (newActiveFound) {
-                activeIndices.forEach(index => {
-                    if (!previousIndices.has(index)) {
-                        sequences[level].push(index + 1);
-                        console.log(`Level ${level}: Tile ${index + 1} is active`);
-                        previousIndices.add(index);
+            
+            if (activeIndices.length > 0) { 
+                activeIndices.forEach(activeIndex => {
+                    if (!sequences[currentLevel].includes(activeIndex + 1)) {
+                        sequences[currentLevel].push(activeIndex + 1); 
+                        console.log(`Level ${currentLevel}: Square ${activeIndex + 1} is active`);
                     }
                 });
-            } else if (activeIndices.length === 0 && sequences[level].length > 0) {
+                previousIndex = activeIndices[activeIndices.length - 1];
+            } else if (sequences[currentLevel].length > 0) {
                 sequenceDetected = true;
-            }
-            await new Promise(resolve => setTimeout(resolve, 500)); 
-        }
-        console.log(`Waiting 2 seconds before clicking for Level ${level}...`);
-        await new Promise(resolve => setTimeout(resolve, 2000)); 
-
-            console.log(`****************************************`);
-            console.log(`***Clicking sequence for Level ${levelActive}...***`);
-            console.log(`****************************************`);
-            
-            const size = gridSizeForLevel(level);
-            console.log(`grid size: ${size}`);
-            
-            for (const index of sequences[level]) {
-                let row = Math.floor((index - 1) / size); 
-                let col = ((index - 1) % size);
-                
-                const selector = `.css-hvbk5q > div:nth-of-type(${row + 1}) .css-lxtdud.eut2yre1:nth-of-type(${col + 1})`;
-                try {
-                    await page.click(selector, { delay: 150 });
-                    console.log(`Clicked on tile in row ${row}, column ${col}`);
-                } catch (error) {
-                    console.error(`Error clicking on tile in row ${row}, column ${col}: ${error.message}`);
-                }
             }
             
             await new Promise(resolve => setTimeout(resolve, 200)); 
-        
+        }
+
+        const size = gridSizeForLevel(currentLevel);
+        console.log(`grid size: ${size}`);
+
+        for (const index of sequences[currentLevel]) {
+
+            const row = Math.floor((index - 1) / size); 
+            const col = (index - 1) % size;
+            
+            const selector = `.css-hvbk5q > div:nth-of-type(${row + 1}) .css-lxtdud.eut2yre1:nth-of-type(${col + 1})`;
+            await page.click(selector, { delay: 50 });
+            console.log(`Clicked on square in row ${row + 1}, column ${col + 1}`);
+        }
+
+        await waitForLevelTransition(page, currentLevel)
+        await new Promise(resolve => setTimeout(resolve)); 
+        currentLevel = await getCurrentLevel(page);
     }
     return sequences;
-    
 }
 
 
 
-
-
+async function waitForLevelTransition(page, previousLevel) {
+    let levelChanged = false;
+    while (!levelChanged) {
+        let newLevel = await getCurrentLevel(page);
+        if (newLevel > previousLevel) {
+            levelChanged = true;
+        }
+    }
+}
 
 
 
