@@ -7,6 +7,13 @@ async function getCurrentLevel(page) {
         return levelSpan ? parseInt(levelSpan.textContent, 10) : null;
     });
 }
+function gridSizeForLevel(level) {
+    if (level <= 2) return 3; 
+    if (level <= 5) return 4; 
+    if (level <= 9) return 5; 
+    
+    return 5 + Math.floor((level - 10) / 5) + 1;
+}
 
 async function detectActiveSquaresByLevel(page, maxLevel = 25) {
     let sequences = {};
@@ -17,7 +24,7 @@ async function detectActiveSquaresByLevel(page, maxLevel = 25) {
         sequences[level] = [];
 
         await new Promise(resolve => setTimeout(resolve)); 
-
+        
         let sequenceDetected = false;
         let previousIndices = new Set(); 
         
@@ -39,17 +46,37 @@ async function detectActiveSquaresByLevel(page, maxLevel = 25) {
             } else if (activeIndices.length === 0 && sequences[level].length > 0) {
                 sequenceDetected = true;
             }
-            
-            await new Promise(resolve => setTimeout(resolve, 200)); 
+            await new Promise(resolve => setTimeout(resolve, 500)); 
         }
 
-        // currently not clicking by itself, I will add this later
-        // code so far checks the active tiles and logs them to the console
-        // so far it works even when the number of tiles increases
+            console.log(`****************************************`);
+            console.log(`***Clicking sequence for Level ${level}...***`);
+            console.log(`****************************************`);
+            
+            const size = gridSizeForLevel(level);
+            console.log(`grid size: ${size}`);
+            
+            for (const index of sequences[level]) {
+                let row = Math.floor((index - 1) / size); 
+                let col = ((index - 1) % size);
+                
+                const selector = `.css-hvbk5q > div:nth-of-type(${row + 1}) .css-lxtdud.eut2yre1:nth-of-type(${col + 1})`;
+                try {
+                    await page.click(selector, { delay: 150 });
+                    console.log(`Clicked on tile in row ${row}, column ${col}`);
+                } catch (error) {
+                    console.error(`Error clicking on tile in row ${row}, column ${col}: ${error.message}`);
+                }
+            }
+            
+            await new Promise(resolve => setTimeout(resolve, 200)); 
+        
     }
-
     return sequences;
+    
 }
+
+
 
 
 
