@@ -1,5 +1,7 @@
 # HumanBenchmark
-Bot for Human Benchmark to practice in Python and Node.js puppeteer
+Bot for Human Benchmark to practice with Node.js puppeteer
+
+# BOTs on GIFs were slowed down to show their abilities 
 
 
 * Reaction Time bot waits for page to turn green and clicks (averaging around 30ms)
