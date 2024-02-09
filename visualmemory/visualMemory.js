@@ -16,45 +16,41 @@ async function detectActiveSquaresByLevel(page, maxLevel = 25) {
         console.log(`****************************************`);
         sequences[level] = [];
 
-        
         await new Promise(resolve => setTimeout(resolve)); 
 
         let sequenceDetected = false;
-        let previousIndex = null;
+        let previousIndices = new Set(); 
         
         while (!sequenceDetected) {
-            const activeIndex = await page.evaluate(() => {
-                const activeSquare = Array.from(document.querySelectorAll('.square')).findIndex(square => square.classList.contains('active'));
-                return activeSquare;
+            const activeIndices = await page.evaluate(() => {
+                const activeSquares = Array.from(document.querySelectorAll('.active.css-lxtdud.eut2yre1'));
+                return activeSquares.map(square => Array.from(document.querySelectorAll('.css-lxtdud.eut2yre1')).indexOf(square));
             });
             
-            if (activeIndex !== -1 && activeIndex !== previousIndex) {
-                sequences[level].push(activeIndex + 1); 
-                console.log(`Level ${level}: Square ${activeIndex + 1} is active`);
-                previousIndex = activeIndex;
-            } else if (activeIndex === -1 && sequences[level].length > 0) {
+            let newActiveFound = activeIndices.some(index => !previousIndices.has(index));
+            if (newActiveFound) {
+                activeIndices.forEach(index => {
+                    if (!previousIndices.has(index)) {
+                        sequences[level].push(index + 1);
+                        console.log(`Level ${level}: Tile ${index + 1} is active`);
+                        previousIndices.add(index);
+                    }
+                });
+            } else if (activeIndices.length === 0 && sequences[level].length > 0) {
                 sequenceDetected = true;
             }
             
             await new Promise(resolve => setTimeout(resolve, 200)); 
         }
 
-        for (const index of sequences[level]) {
-
-            const row = Math.floor((index - 1) / 3); 
-            const col = (index - 1) % 3;
-            
-            const selector = `.square-row:nth-of-type(${row + 1}) .square:nth-of-type(${col + 1})`;
-            await page.click(selector, { delay: 50 });
-            console.log(`Clicked on square in row ${row + 1}, column ${col + 1}`);
-        }
-
-
-        await new Promise(resolve => setTimeout(resolve)); 
+        // currently not clicking by itself, I will add this later
+        // code so far checks the active tiles and logs them to the console
+        // so far it works even when the number of tiles increases
     }
 
     return sequences;
 }
+
 
 
 

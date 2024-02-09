@@ -22,3 +22,5 @@ Bot for Human Benchmark to practice in Python and Node.js puppeteer
 
 ![alt text](sequencetest.gif)
 
+
+* Visual Memory bot currently in progress of making. It tracks which tiles were active, but I still need to add clicking bot

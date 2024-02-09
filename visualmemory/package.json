@@ -5,7 +5,7 @@
   "main": "visualMemory.js",
   "scripts": {
     "start": "node visualMemory.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node inspect.js"
   },
   "author": "Mike Klimanek",
   "license": "ISC",
