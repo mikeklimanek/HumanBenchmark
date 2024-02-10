@@ -55,16 +55,16 @@ Welcome to the Human Benchmark Bot Collection! This guide will help you set up a
 Before you begin, make sure you have Node.js and npm installed on your computer. If you haven't installed these yet, follow the instructions on the Node.js website.
 
 * Step 1: Clone the Repository
-First, clone the repository to your local machine. Open a terminal or command prompt and run the following command:
+  * First, clone the repository to your local machine. Open a terminal or command prompt and run the following command:
 ```git clone https://github.com/mikeklimanek/HumanBenchmark```
 
 * Step 2: Install Dependencies
-Each bot has its own folder within the repository, containing a package.json file with the necessary dependencies. To install these dependencies, navigate to the bot's folder and run:
+  * Each bot has its own folder within the repository, containing a package.json file with the necessary dependencies. To install these dependencies, navigate to the bot's folder and run:
 ```npm install ```
 
 * Step 3: Running a Bot
-To run a specific bot, navigate to the bot's folder in your terminal or command prompt. For example, to run the Reaction Time bot, you would do the following:
+  * To run a specific bot, navigate to the bot's folder in your terminal or command prompt. For example, to run the Reaction Time bot, you would do the following:
 ```cd chimptest```
 
-once you are in a specific directory for a bot, you can run it with:
+  * once you are in a specific directory for a bot, you can run it with:
 ```npm start```
