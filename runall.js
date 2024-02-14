@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { execSync } = require('child_process');
-const botDirectories = ['./Bot1Directory', './Bot2Directory']; 
+const botDirectories = ['./verbalmemory', './sequence', './aimtrainer', './chimptest', './visualmemory', './reactiontime', './numbermemory', './typingtest'];
+
 
 async function setupAndStartBot(botDir) {
   if (!fs.existsSync(`${botDir}/package.json`) || !fs.existsSync(`${botDir}/node_modules`)) {

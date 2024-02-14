@@ -25,7 +25,7 @@ async function clickNumbersInOrder(page) {
 
 
 
-async function main() {
+async function chimpTest() {
     const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
     const page = await browser.newPage();
     await page.goto('https://humanbenchmark.com/tests/chimp', { waitUntil: 'networkidle2' });
@@ -75,4 +75,6 @@ async function main() {
 
 }
 
-main();
+chimpTest();
+
+module.exports = { chimpTest };

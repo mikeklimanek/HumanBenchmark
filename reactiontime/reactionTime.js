@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
-async function main(){
+async function reactionTime(){
     const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
     const page = await browser.newPage();
     await page.goto('https://humanbenchmark.com/tests/reactiontime', {waitUntil: 'networkidle2'});
@@ -38,4 +38,6 @@ async function main(){
 
 }
 
-main();
+reactionTime();
+
+module.exports = { reactionTime };

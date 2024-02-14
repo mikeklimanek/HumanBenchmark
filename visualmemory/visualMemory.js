@@ -87,7 +87,7 @@ async function waitForLevelTransition(page, previousLevel) {
 
 
 
-async function main() {
+async function visualMemory() {
     const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
     const page = await browser.newPage();
     await page.goto('https://humanbenchmark.com/tests/memory', { waitUntil: 'networkidle2' });
@@ -118,4 +118,6 @@ async function main() {
 
 }
 
-main();
+visualMemory();
+
+module.exports = { visualMemory };

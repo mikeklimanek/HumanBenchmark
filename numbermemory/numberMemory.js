@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
-async function main(){
+async function numberMemory(){
     const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
     const page = await browser.newPage();
     await page.goto('https://humanbenchmark.com/tests/number-memory', {waitUntil: 'networkidle2'});
@@ -45,4 +45,6 @@ async function main(){
    
 }
 
-main();
+numberMemory();
+
+module.exports = { numberMemory };

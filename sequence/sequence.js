@@ -60,7 +60,7 @@ async function detectActiveSquaresByLevel(page, maxLevel = 25) {
 
 
 
-async function main() {
+async function sequence() {
     const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
     const page = await browser.newPage();
     await page.goto('https://humanbenchmark.com/tests/sequence', { waitUntil: 'networkidle2' });
@@ -91,4 +91,6 @@ async function main() {
 
 }
 
-main();
+sequence();
+
+module.exports = { sequence };
