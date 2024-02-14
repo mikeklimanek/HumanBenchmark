@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "start": "node runall.js"
+  },
+  "name": "humanbenchmark",
+  "description": "Bot for Human Benchmark to practice with Node.js puppeteer",
+  "version": "1.0.0",
+  "main": "runall.js",
+  "author": "Mike Klimanek",
+  "license": "ISC"
+}
