@@ -16,7 +16,7 @@ function gridSizeForLevel(level) {
     if (level < 19) return 7;
 }
 
-async function detectActiveSquaresByLevel(page, maxLevel = 18) {
+async function detectActiveSquaresByLevel(page, maxLevel = 5) {
     let sequences = {};
     let currentLevel = await getCurrentLevel(page);
     while (currentLevel <= maxLevel) {
@@ -114,7 +114,7 @@ async function visualMemory() {
     const levelActive = await getCurrentLevel(page);
     const levelActiveSquares = await detectActiveSquaresByLevel(page);
     console.log('Detection completed:', levelActiveSquares, levelActive);
-
+    await browser.close();
 
 }
 

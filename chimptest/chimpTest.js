@@ -51,7 +51,7 @@ async function chimpTest() {
     await delay(500);
 
 
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 5; i++) {
         let continueToNextLevel = true;
         while (continueToNextLevel) {
             const nextLevelButton = await page.$('.css-de05nr.e19owgy710'); 
@@ -71,6 +71,7 @@ async function chimpTest() {
 
 
     console.log('loop finished');
+    await browser.close();
 
 
 }

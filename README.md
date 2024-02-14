@@ -3,7 +3,14 @@ Bot for Human Benchmark to practice with Node.js puppeteer
 
 # BOTs on GIFs were slowed down to show their abilities 
 
-# instalation process explained further below
+# instalation
+
+head to main directory for all bots ```cd humanbenchmark```
+
+then run ```npm start```
+
+for your first use, each bot will install its own node modules and then run.
+From second use and onwards the bots will all simply run just by ```npm start```
 
 
 * Reaction Time bot waits for page to turn green and clicks (averaging around 30ms)
@@ -48,7 +55,7 @@ ________________________________________________________________________________
 
 
 
-# Installation Guide
+# Installation Guide to run bots separately
 Welcome to the Human Benchmark Bot Collection! This guide will help you set up and use the various bots included in this repository. Each bot is designed to automate tasks on the Human Benchmark website using Node.js and Puppeteer. Let's get started.
 
 * Prerequisites

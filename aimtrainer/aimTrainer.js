@@ -27,10 +27,7 @@ async function aimTrainer(){
           await waitForClickMessageAndClick();
 
       }
-
-
-
-
+      await browser.close();
 }
 
 aimTrainer();

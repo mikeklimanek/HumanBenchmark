@@ -33,9 +33,7 @@ async function reactionTime(){
 
       }
 
-
-
-
+      await browser.close();
 }
 
 reactionTime();

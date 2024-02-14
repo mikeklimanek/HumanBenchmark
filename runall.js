@@ -19,4 +19,4 @@ async function startAllBots() {
   }
 }
 
-startAllBots().then(() => console.log('All bots have been started'));
+startAllBots().then(() => console.log('All bots have finished running.'));

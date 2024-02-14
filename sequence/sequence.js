@@ -8,7 +8,7 @@ async function getCurrentLevel(page) {
     });
 }
 
-async function detectActiveSquaresByLevel(page, maxLevel = 25) {
+async function detectActiveSquaresByLevel(page, maxLevel = 5) {
     let sequences = {};
     for (let level = 1; level <= maxLevel; level++) {
         console.log(`****************************************`);
@@ -87,6 +87,7 @@ async function sequence() {
     const levelActive = await getCurrentLevel(page);
     const levelActiveSquares = await detectActiveSquaresByLevel(page);
     console.log('Detection completed:', levelActiveSquares, levelActive);
+    await browser.close();
 
 
 }

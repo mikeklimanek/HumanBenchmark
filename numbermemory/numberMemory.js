@@ -23,7 +23,7 @@ async function numberMemory(){
     console.log('Start button clicked');
 
     
-    for (let i = 0; i < 25; i++) {  // change the loop length in i < 25, but remember it will take longer to finish
+    for (let i = 0; i < 5; i++) {  // change the loop length in i < 25, but remember it will take longer to finish
                                     // since the more digits a number has, the longer it stays on the screen
         const savedNums = [];
 
@@ -42,7 +42,7 @@ async function numberMemory(){
         await page.waitForTimeout(500);
         await page.keyboard.press('Enter');
     }
-   
+    await browser.close();
 }
 
 numberMemory();

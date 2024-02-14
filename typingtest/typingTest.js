@@ -31,6 +31,7 @@ async function typingTest(){
       for (const part of textParts) {
           await page.keyboard.press(part, /*{delay: 120}*/); // uncomment delay if you want to simulate human speed
       }
+      await browser.close();
 }
 
 typingTest();
