@@ -26,8 +26,8 @@ async function clickNumbersInOrder(page) {
 
 
 async function chimpTest() {
-    // const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
-    // const page = await browser.newPage();
+    const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
+    const page = await browser.newPage();
     await page.goto('https://humanbenchmark.com/tests/chimp', { waitUntil: 'networkidle2' });
 
     try {     /* clicks 'AGREE' on cookies first to get rid of the pop up */
@@ -69,9 +69,8 @@ async function chimpTest() {
         
     }
 
-
     console.log('Chimp test finished');
-
+    await browser.close();
 }
 
 chimpTest();

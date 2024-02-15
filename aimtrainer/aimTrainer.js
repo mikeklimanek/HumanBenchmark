@@ -1,6 +1,5 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
-const { saveButton } = require('../runall');
 
 async function aimTrainer(){
     const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
@@ -28,8 +27,9 @@ async function aimTrainer(){
           await waitForClickMessageAndClick();
           
       }
-
-      saveButton();
+      const saveButtonSelector = 'button.css-qm6rs9.e19owgy710';
+      await page.click(saveButtonSelector);
+      
 }
 
 aimTrainer();

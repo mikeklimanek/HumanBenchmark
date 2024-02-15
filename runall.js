@@ -2,15 +2,6 @@ const fs = require('fs');
 const { execSync } = require('child_process');
 const botDirectories = ['./aimtrainer', './chimptest', './numbermemory', './reactiontime', './sequence', './typingtest', './verbalmemory', './visualmemory'];
 
-async function saveButton() {;
-  const saveButton = 'button.css-qm6rs9.e19owgy710';
-  if (saveButton) {
-    await page.click('.css-qm6rs9.e19owgy710');
-  }
-}
-
-module.exports = { saveButton };
-
 
 async function setupAndStartBot(botDir) {
   if (!fs.existsSync(`${botDir}/package.json`) || !fs.existsSync(`${botDir}/node_modules`)) {
