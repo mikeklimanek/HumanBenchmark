@@ -51,7 +51,7 @@ async function chimpTest(page) {
     await delay(500);
 
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 3; i++) {
         let continueToNextLevel = true;
         while (continueToNextLevel) {
             const nextLevelButton = await page.$('.css-de05nr.e19owgy710'); 
@@ -67,7 +67,7 @@ async function chimpTest(page) {
             continueToNextLevel = await page.$('.css-de05nr.e19owgy710') !== null;
         }        
     }
-    for (let j = 0; j < 3; j++) { // Use < 3 to run the loop three times
+    for (let j = 0; j < 3; j++) { // breaking point to get out of the test
         let continueToNextLevel = true;
         while (continueToNextLevel) {
             const nextLevelButton = await page.$('.css-de05nr.e19owgy710');

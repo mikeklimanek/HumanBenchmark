@@ -1,21 +1,21 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
-async function numberMemory(){
-    const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
-    const page = await browser.newPage();
+async function numberMemory(page){
+    // const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
+    // const page = await browser.newPage();
     await page.goto('https://humanbenchmark.com/tests/number-memory', {waitUntil: 'networkidle2'});
 
-    try {     /* clicks 'AGREE' on cookies first to get rid of the pop up */
-        const selector = 'button.css-47sehv, span.css-47sehv';
-        const agreeButton = await page.waitForSelector(selector, { timeout: 5000 });
-        if (agreeButton) {
-          console.log('Accepted cookies');
-          await agreeButton.click();
-        }
-      } catch (error) {
-        console.log('Cookies AGREE button not found:', error);
-      }
+    // try {     /* clicks 'AGREE' on cookies first to get rid of the pop up */
+    //     const selector = 'button.css-47sehv, span.css-47sehv';
+    //     const agreeButton = await page.waitForSelector(selector, { timeout: 5000 });
+    //     if (agreeButton) {
+    //       console.log('Accepted cookies');
+    //       await agreeButton.click();
+    //     }
+    //   } catch (error) {
+    //     console.log('Cookies AGREE button not found:', error);
+    //   }
     
     const clickStartSelector = '.css-de05nr.e19owgy710'; 
     const clickStart = await page.waitForSelector(clickStartSelector, { timeout: 5000 });
@@ -23,7 +23,7 @@ async function numberMemory(){
     console.log('Start button clicked');
 
     
-    for (let i = 0; i < 5; i++) {  // change the loop length in i < 25, but remember it will take longer to finish
+    for (let i = 0; i < 1; i++) {  // change the loop length in i < 25, but remember it will take longer to finish
                                     // since the more digits a number has, the longer it stays on the screen
         const savedNums = [];
 
@@ -39,12 +39,21 @@ async function numberMemory(){
         await page.evaluate(() => document.querySelector('input[type="text"][pattern="[0-9]*"]').value = '');
         await page.type('input[type="text"][pattern="[0-9]*"]', number); 
         await page.keyboard.press('Enter');
-        await page.waitForTimeout(500);
         await page.keyboard.press('Enter');
     }
-    await browser.close();
+    await page.waitForSelector('.big-number', {visible: true}, el => el.textContent);
+    await page.waitForSelector('input[type="text"][pattern="[0-9]*"]', {timeout: 60000});
+    await page.evaluate(() => document.querySelector('input[type="text"][pattern="[0-9]*"]').value = '');
+    await page.type('input[type="text"][pattern="[0-9]*"]', "2"); 
+    await page.keyboard.press('Enter');
+
+    const saveButtonSelector = 'button.css-qm6rs9.e19owgy710';
+    await page.click(saveButtonSelector);
+    const delay = time => new Promise(resolve => setTimeout(resolve, time));
+    await delay(2500);
+    // await browser.close();
 }
 
-numberMemory();
+// numberMemory();
 
 module.exports = { numberMemory };
