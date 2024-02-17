@@ -1,9 +1,9 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
-async function aimTrainer(){
-    const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
-    const page = await browser.newPage();
+async function aimTrainer(page){
+    // const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
+    // const page = await browser.newPage();
     await page.goto('https://humanbenchmark.com/tests/aim', {waitUntil: 'networkidle2'});
     
     try {     /* clicks 'AGREE' on cookies first to get rid of the pop up */
@@ -29,9 +29,12 @@ async function aimTrainer(){
       }
       const saveButtonSelector = 'button.css-qm6rs9.e19owgy710';
       await page.click(saveButtonSelector);
+      const delay = time => new Promise(resolve => setTimeout(resolve, time));
+      await delay(2500);
+      // await browser.close();
       
 }
 
-aimTrainer();
+// aimTrainer();
 
 module.exports = { aimTrainer };
