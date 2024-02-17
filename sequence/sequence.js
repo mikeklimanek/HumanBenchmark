@@ -8,7 +8,7 @@ async function getCurrentLevel(page) {
     });
 }
 
-async function detectActiveSquaresByLevel(page, maxLevel = 5) {
+async function detectActiveSquaresByLevel(page, maxLevel = 2) {
     let sequences = {};
     for (let level = 1; level <= maxLevel; level++) {
         console.log(`****************************************`);
@@ -56,25 +56,41 @@ async function detectActiveSquaresByLevel(page, maxLevel = 5) {
     return sequences;
 }
 
+async function exitTest(page) {
+    let squareFound = true;
+
+    while (squareFound) {
+        try {
+            await page.waitForSelector('.square', { visible: true, timeout: 2000 });
+            await page.click('.square');
+        } catch (error) {
+            squareFound = false;
+            console.log("No more visible squares");
+        }
+        const delay = time => new Promise(resolve => setTimeout(resolve, time));
+        await delay(1000);
+    }
+}
 
 
 
 
-async function sequence() {
-    const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
-    const page = await browser.newPage();
+
+async function sequence(page) {
+    // const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
+    // const page = await browser.newPage();
     await page.goto('https://humanbenchmark.com/tests/sequence', { waitUntil: 'networkidle2' });
 
-    try {     /* clicks 'AGREE' on cookies first to get rid of the pop up */
-    const selector = 'button.css-47sehv, span.css-47sehv';
-    const agreeButton = await page.waitForSelector(selector, { timeout: 5000 });
-    if (agreeButton) {
-      console.log('Accepted cookies');
-      await agreeButton.click();
-    }
-    } catch (error) {
-        console.log('Cookies AGREE button not found:', error);
-    }
+    // try {     /* clicks 'AGREE' on cookies first to get rid of the pop up */
+    // const selector = 'button.css-47sehv, span.css-47sehv';
+    // const agreeButton = await page.waitForSelector(selector, { timeout: 5000 });
+    // if (agreeButton) {
+    //   console.log('Accepted cookies');
+    //   await agreeButton.click();
+    // }
+    // } catch (error) {
+    //     console.log('Cookies AGREE button not found:', error);
+    // }
 
     const clickStartSelector = '.css-de05nr.e19owgy710'; 
     const clickStart = await page.waitForSelector(clickStartSelector, { timeout: 5000 });
@@ -84,14 +100,21 @@ async function sequence() {
     console.log('Waiting for sequence to start...');
     const delay = time => new Promise(resolve => setTimeout(resolve, time));
     await delay(500);
+
     const levelActive = await getCurrentLevel(page);
     const levelActiveSquares = await detectActiveSquaresByLevel(page);
     console.log('Detection completed:', levelActiveSquares, levelActive);
-    await browser.close();
+
+    await exitTest(page);
+
+    const saveButtonSelector = 'button.css-qm6rs9.e19owgy710';
+    await page.click(saveButtonSelector);
+    await delay(2500);
+    // await browser.close();
 
 
 }
 
-sequence();
+// sequence();
 
 module.exports = { sequence };
