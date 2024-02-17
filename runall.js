@@ -5,6 +5,8 @@ const { chimpTest } = require('./chimptest/chimpTest');
 const { numberMemory } = require('./numbermemory/numberMemory');
 const { reactionTime } = require('./reactiontime/reactionTime');
 const { sequence } = require('./sequence/sequence');
+const { typingTest } = require('./typingtest/typingTest');
+const { verbalMemory } = require('./verbalmemory/verbalMemory');
 // const { execSync } = require('child_process');
 // const botDirectories = ['./aimtrainer', './chimptest', './numbermemory', './reactiontime', './sequence', './typingtest', './verbalmemory', './visualmemory'];
 
@@ -19,7 +21,7 @@ const { sequence } = require('./sequence/sequence');
 //   execSync('npm start', { cwd: botDir, stdio: 'inherit' });
 // }
 
-const botTasks = [aimTrainer, chimpTest, numberMemory, reactionTime, sequence];
+const botTasks = [aimTrainer, chimpTest, numberMemory, reactionTime, sequence, typingTest, verbalMemory];
 
 async function startAllBots() {
   const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null });

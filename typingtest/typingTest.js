@@ -1,21 +1,21 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
-async function typingTest(){
-    const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
-    const page = await browser.newPage();
+async function typingTest(page){
+    // const browser = await puppeteer.launch({ headless: false, args: ['--start-maximized'], defaultViewport: null});
+    // const page = await browser.newPage();
     await page.goto('https://humanbenchmark.com/tests/typing', {waitUntil: 'networkidle2'});
 
-    try {     /* clicks 'AGREE' on cookies first to get rid of the pop up */
-        const selector = 'button.css-47sehv, span.css-47sehv';
-        const agreeButton = await page.waitForSelector(selector, { timeout: 5000 });
-        if (agreeButton) {
-          console.log('Accepted cookies');
-          await agreeButton.click();
-        }
-      } catch (error) {
-        console.log('Cookies AGREE button not found:', error);
-      }
+    // try {     /* clicks 'AGREE' on cookies first to get rid of the pop up */
+    //     const selector = 'button.css-47sehv, span.css-47sehv';
+    //     const agreeButton = await page.waitForSelector(selector, { timeout: 5000 });
+    //     if (agreeButton) {
+    //       console.log('Accepted cookies');
+    //       await agreeButton.click();
+    //     }
+    //   } catch (error) {
+    //     console.log('Cookies AGREE button not found:', error);
+    //   }
 
 
       await page.waitForSelector('span.incomplete');
@@ -31,9 +31,13 @@ async function typingTest(){
       for (const part of textParts) {
           await page.keyboard.press(part, /*{delay: 120}*/); // uncomment delay if you want to simulate human speed
       }
-      await browser.close();
+      // await browser.close();
+      const saveButtonSelector = 'button.css-qm6rs9.e19owgy710';
+      await page.click(saveButtonSelector);
+      const delay = time => new Promise(resolve => setTimeout(resolve, time));
+      await delay(2500);
 }
 
-typingTest();
+// typingTest();
 
 module.exports = { typingTest };

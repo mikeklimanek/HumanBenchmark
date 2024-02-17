@@ -93,7 +93,7 @@ async function sequence(page) {
     // }
 
     const clickStartSelector = '.css-de05nr.e19owgy710'; 
-    const clickStart = await page.waitForSelector(clickStartSelector, { timeout: 5000 });
+    const clickStart = await page.waitForSelector(clickStartSelector, { timeout: 10000 });
     await clickStart.click();
     console.log('Start button clicked');
 
