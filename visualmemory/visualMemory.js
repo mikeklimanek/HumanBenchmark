@@ -20,6 +20,9 @@ async function detectActiveSquaresByLevel(page, maxLevel = 1) {
     let sequences = {};
     let currentLevel = await getCurrentLevel(page);
     let extraLevels = 3;
+    const delay = time => new Promise(resolve => setTimeout(resolve, time));
+
+
     while (currentLevel <= maxLevel + extraLevels) {
         console.log(`****************************************`);
         console.log(`***Detecting sequence for Level ${currentLevel}...***`);
@@ -58,24 +61,32 @@ async function detectActiveSquaresByLevel(page, maxLevel = 1) {
         console.log(`grid size: ${size}`);
 
         if (currentLevel > maxLevel) {
-            // Calculate the total number of squares in the grid
-            let size = gridSizeForLevel(currentLevel); // Assuming this function returns the correct grid size
-            const totalSquares = size * size; // Total squares in the grid
-        
-            for (let i = 1; i <= totalSquares; i++) {
-                // Calculate row and column for each square index
+            const totalSquares = size * size;
+            let saveButtonVisible = false;
+            for (let i = 1; i <= totalSquares && !saveButtonVisible; i++) {
                 const row = Math.floor((i - 1) / size) + 1; 
                 const col = ((i - 1) % size) + 1;
-        
-                // Selector to target each square in the grid
                 const selector = `.css-hvbk5q > div:nth-of-type(${row}) .css-lxtdud.eut2yre1:nth-of-type(${col})`;
         
-                // Click on each square
-                await page.click(selector, { delay: 2 });
-                console.log(`Clicked on square in row ${row}, column ${col}`);
+                await page.click(selector, { delay: 5 }).catch(e => console.error(`Error clicking square: ${e.message}`));
+        
+                saveButtonVisible = await page.evaluate((saveButtonSelector) => {
+                    const saveButton = document.querySelector(saveButtonSelector);
+                    return saveButton !== null && saveButton.offsetWidth > 0 && saveButton.offsetHeight > 0;
+                }, 'button.css-qm6rs9.e19owgy710');
+        
             }
+        
+            if (saveButtonVisible) {
+                console.log("Save button is visible. Stopping the clicking loop.");
+                await page.click('button.css-qm6rs9.e19owgy710');
+                await delay(2500);
+            } else {
+                console.log("Completed clicking all squares without the save button becoming visible.");
+                continue
+            }
+
         } else {
-            // Normal sequence detection and clicking
             for (const index of sequences[currentLevel]) {
                 const row = Math.floor((index - 1) / size); 
                 const col = (index - 1) % size;
