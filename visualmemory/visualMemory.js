@@ -16,10 +16,11 @@ function gridSizeForLevel(level) {
     if (level < 19) return 7;
 }
 
-async function detectActiveSquaresByLevel(page, maxLevel = 5) {
+async function detectActiveSquaresByLevel(page, maxLevel = 1) {
     let sequences = {};
     let currentLevel = await getCurrentLevel(page);
-    while (currentLevel <= maxLevel) {
+    let extraLevels = 3;
+    while (currentLevel <= maxLevel + extraLevels) {
         console.log(`****************************************`);
         console.log(`***Detecting sequence for Level ${currentLevel}...***`);
         console.log(`****************************************`);
@@ -53,24 +54,42 @@ async function detectActiveSquaresByLevel(page, maxLevel = 5) {
             await new Promise(resolve => setTimeout(resolve, 200)); 
         }
 
-        const size = gridSizeForLevel(currentLevel);
+        let size = gridSizeForLevel(currentLevel);
         console.log(`grid size: ${size}`);
 
-        for (const index of sequences[currentLevel]) {
-
-            const row = Math.floor((index - 1) / size); 
-            const col = (index - 1) % size;
-            
-            const selector = `.css-hvbk5q > div:nth-of-type(${row + 1}) .css-lxtdud.eut2yre1:nth-of-type(${col + 1})`;
-            await page.click(selector, { delay: 50 });
-            console.log(`Clicked on square in row ${row + 1}, column ${col + 1}`);
+        if (currentLevel > maxLevel) {
+            // Calculate the total number of squares in the grid
+            let size = gridSizeForLevel(currentLevel); // Assuming this function returns the correct grid size
+            const totalSquares = size * size; // Total squares in the grid
+        
+            for (let i = 1; i <= totalSquares; i++) {
+                // Calculate row and column for each square index
+                const row = Math.floor((i - 1) / size) + 1; 
+                const col = ((i - 1) % size) + 1;
+        
+                // Selector to target each square in the grid
+                const selector = `.css-hvbk5q > div:nth-of-type(${row}) .css-lxtdud.eut2yre1:nth-of-type(${col})`;
+        
+                // Click on each square
+                await page.click(selector, { delay: 2 });
+                console.log(`Clicked on square in row ${row}, column ${col}`);
+            }
+        } else {
+            // Normal sequence detection and clicking
+            for (const index of sequences[currentLevel]) {
+                const row = Math.floor((index - 1) / size); 
+                const col = (index - 1) % size;
+                const selector = `.css-hvbk5q > div:nth-of-type(${row + 1}) .css-lxtdud.eut2yre1:nth-of-type(${col + 1})`;
+                await page.click(selector, { delay: 50 });
+                console.log(`Clicked on square in row ${row + 1}, column ${col + 1}`);
+            }
         }
 
         await waitForLevelTransition(page, currentLevel)
         await new Promise(resolve => setTimeout(resolve)); 
         currentLevel = await getCurrentLevel(page);
     }
-    return sequences;
+    return sequences; 
 }
 
 
@@ -114,7 +133,7 @@ async function visualMemory() {
     const levelActive = await getCurrentLevel(page);
     const levelActiveSquares = await detectActiveSquaresByLevel(page);
     console.log('Detection completed:', levelActiveSquares, levelActive);
-    await browser.close();
+    // await browser.close();
 
 }
 
