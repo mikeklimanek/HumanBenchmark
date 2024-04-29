@@ -1,5 +1,6 @@
 # HumanBenchmark
 Bot for Human Benchmark to practice with Node.js puppeteer
+# Currently out of date due to few changes, working on update
 
 # BOTs on GIFs were slowed down to show their abilities 
 

@@ -61,31 +61,24 @@ async function detectActiveSquaresByLevel(page, maxLevel = 1) {
         console.log(`grid size: ${size}`);
 
         if (currentLevel > maxLevel) {
-            const totalSquares = size * size;
-            let saveButtonVisible = false;
-            for (let i = 1; i <= totalSquares && !saveButtonVisible; i++) {
-                const row = Math.floor((i - 1) / size) + 1; 
-                const col = ((i - 1) % size) + 1;
+            const nonActiveIndices = [];
+            const gridSize = gridSizeForLevel(currentLevel); 
+            const totalSquares = gridSize * gridSize; 
+        
+            for (let i = 1; i <= totalSquares; i++) {
+                if (!sequences[currentLevel].includes(i)) {
+                    nonActiveIndices.push(i);
+                }
+            }
+        
+            for (const index of nonActiveIndices) {
+                const row = Math.floor((index - 1) / gridSize) + 1;
+                const col = (index - 1) % gridSize + 1;
                 const selector = `.css-hvbk5q > div:nth-of-type(${row}) .css-lxtdud.eut2yre1:nth-of-type(${col})`;
         
-                await page.click(selector, { delay: 5 }).catch(e => console.error(`Error clicking square: ${e.message}`));
-        
-                saveButtonVisible = await page.evaluate((saveButtonSelector) => {
-                    const saveButton = document.querySelector(saveButtonSelector);
-                    return saveButton !== null && saveButton.offsetWidth > 0 && saveButton.offsetHeight > 0;
-                }, 'button.css-qm6rs9.e19owgy710');
-        
+                await page.click(selector, { delay: 50 });
+                console.log(`Intentionally clicked on non-active square at row ${row}, column ${col}`);
             }
-        
-            if (saveButtonVisible) {
-                console.log("Save button is visible. Stopping the clicking loop.");
-                await page.click('button.css-qm6rs9.e19owgy710');
-                await delay(2500);
-            } else {
-                console.log("Completed clicking all squares without the save button becoming visible.");
-                continue
-            }
-
         } else {
             for (const index of sequences[currentLevel]) {
                 const row = Math.floor((index - 1) / size); 
